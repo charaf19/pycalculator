@@ -5,7 +5,10 @@ LIGHT_GREY = "#D3D3D3"
 LABEL_COLOR = "#25265E"
 SMALL_FONT_STYLE = ("arial", 16)
 BIG_FONT_STYLE = ('arial', 41, "bold")
-DIGITS_POLICE=("arial",24,"bold")
+DIGITS_POLICE = ("arial", 24, "bold")
+DEFAULT_POLICE = ("arial", 20)
+OFF_WHITE = "#FAFAFF"
+LIGHT_BLUE="#CCDDFF"
 
 class Calculator:
 
@@ -26,8 +29,16 @@ class Calculator:
             0: (4, 2), '.': (4, 1)
         }
 
+        self.operations = {"/": "\u00F7", "*": "\u00D7", "-": "-", "+": "+"}
+        # \u00F7 et l'autre ce sont deux valeur unicode qui representes ls deux symboles de devision et de multiplication
         self.buttons_frame = self.create_button_frame()
         self.create_digits_buttons()
+        self.create_operator_buttons()
+        self.create_special_buttons()
+
+    def create_special_buttons(self):
+        self.create_create_clear_button()
+        self.create_create_equals_button()
 
     def create_display_frame(self):
         frame = tk.Frame(self.window, height=221, bg=LIGHT_GREY)
@@ -36,8 +47,27 @@ class Calculator:
 
     def create_digits_buttons(self):
         for digits, grid in self.digits.items():
-            button = tk.Button(self.buttons_frame, text=str(digits), bg=WHITE, fg=LABEL_COLOR,font=DIGITS_POLICE,borderwidth=0 )
+            button = tk.Button(self.buttons_frame, text=str(digits), bg=WHITE, fg=LABEL_COLOR, font=DIGITS_POLICE,
+                               borderwidth=0)
             button.grid(row=grid[0], column=grid[1], sticky=tk.NSEW)
+
+    def create_operator_buttons(self):
+        i = 0
+        for operator, symbol in self.operations.items():
+            button = tk.Button(self.buttons_frame, text=symbol, font=DEFAULT_POLICE, bg=OFF_WHITE, fg=LABEL_COLOR,
+                               borderwidth=0)
+            button.grid(row=i, column=4, sticky=tk.NSEW)
+            i = i +1
+
+    def create_create_clear_button(self):
+        button = tk.Button(self.buttons_frame, text="C", font=DEFAULT_POLICE, bg=OFF_WHITE, fg=LABEL_COLOR,
+                           borderwidth=0)
+        button.grid(row=0, column=1, columnspan=3,sticky=tk.NSEW)
+
+    def create_create_equals_button(self):
+        button = tk.Button(self.buttons_frame, text='=', font=DEFAULT_POLICE, bg=LIGHT_BLUE, fg=LABEL_COLOR,
+                           borderwidth=0)
+        button.grid(row=4, column=3, columnspan=2,sticky=tk.NSEW)
 
     def create_button_frame(self):
         frame = tk.Frame(self.window)
